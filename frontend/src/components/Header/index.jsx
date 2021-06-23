@@ -1,0 +1,36 @@
+import Provider from '../Provider';
+
+import { Box, Button } from '@chakra-ui/react';
+import { AddIcon } from '@chakra-ui/icons';
+
+import store from '../../store';
+
+export default function Header() {
+  return (
+    <div id="header">
+      <Box w="100%" bg="purple.600" color="white" p={4}>
+        <Provider>
+          <Box display="flex" justifyContent="space-between" fontSize="2xl" fontWeight="600">
+
+            <h2>Bem-vindo!</h2>
+
+            <Button 
+              colorScheme="purple"
+              transition="all 0.3s ease"
+              _hover={{
+                filter: "brightness(110%)"
+              }}
+            >
+              <AddIcon
+                fontSize="2xl"
+                cursor="pointer"
+              />
+            </Button>
+
+
+          </Box>
+        </Provider>
+      </Box>
+    </div>
+  )
+};
