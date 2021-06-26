@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
+const mongoose = require('mongoose');
 
 require('dotenv').config();
 
@@ -25,5 +26,7 @@ app.use('/api', api);
 
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
+
+mongoose.connect(process.env.MONGO_DB_URL, {useNewUrlParser: true, useUnifiedTopology: true});
 
 module.exports = app;
