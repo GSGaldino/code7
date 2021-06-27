@@ -15,7 +15,7 @@ export default function CardsWrapper({ debts, users }) {
           <Wrap justify="space-around" >
 
             {debts && debts
-              .map(debt => <WrapItem><Card key={Math.random()} users={users} data={debt} /></WrapItem>)}
+              .map(debt => <WrapItem><Card key={debt.debt_id} users={users} data={debt} /></WrapItem>)}
 
           </Wrap>
         </Box>

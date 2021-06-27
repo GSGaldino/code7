@@ -76,6 +76,25 @@ export default function ModalCard({ users }) {
     }
   };
 
+  const saveDebt = async (debt_id) => {
+    if (!formFields)
+      return toast({
+        isClosable: true,
+        title: "Erro",
+        variant: "subtle",
+        status: "warning",
+        description: "Nada para salvar."
+      });
+
+    await Api.updateDebt({
+      debt_id: debt_id,
+      query: formFields
+    });
+
+    store.dispatch({type: "close", data: []});
+    window.location.reload();
+  };
+
   store.subscribe(() => setState(store.getState()));
 
   const boxStyles = {
@@ -89,10 +108,10 @@ export default function ModalCard({ users }) {
     <>
       <Modal isOpen={state.isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent >
           <ModalCloseButton />
 
-          <ModalBody>
+          <ModalBody pt={8}>
 
             <Box {...boxStyles}>
               <p>Usuário: </p>
@@ -117,13 +136,14 @@ export default function ModalCard({ users }) {
               {!state.isNewDebt
                 ? (<Editable
                   defaultValue={state.data && state.data.debt_reason}
+                  name="debt_reason"
                   borderWidth="1px"
                   borderRadius="lg"
                   p="4px 20px"
                   minH="20px"
                 >
-                  <EditablePreview w="100%" h="100%" />
-                  <EditableInput w="100%" h="100%" />
+                  <EditablePreview w="100%" h="100%" name="debt_reason"/>
+                  <EditableInput w="100%" h="100%" name="debt_reason" onChange={onChange}/>
                 </Editable>)
                 : (<Input placeholder="Motivo da dívida" onChange={onChange} name="debt_reason" />)}
             </Box>
@@ -133,13 +153,14 @@ export default function ModalCard({ users }) {
               {!state.isNewDebt
                 ? (<Editable
                   defaultValue={state.data && state.data.debt_value}
+                  name="debt_value"
                   borderWidth="1px"
                   borderRadius="lg"
                   p="4px 20px"
                   minH={2}
                 >
-                  <EditablePreview w="100%" h="100%" />
-                  <EditableInput w="100%" h="100%" />
+                  <EditablePreview w="100%" h="100%" name="debt_value"/>
+                  <EditableInput w="100%" h="100%" onChange={onChange} name="debt_value"/>
                 </Editable>)
                 : (<Input placeholder="Valor da dívida" onChange={onChange} name="debt_value" />)}
             </Box>
@@ -149,12 +170,13 @@ export default function ModalCard({ users }) {
               {!state.isNewDebt
                 ? (<Editable
                   defaultValue={state.data && state.data.debt_date}
+                  name="debt_date"
                   borderWidth="1px"
                   p="4px 20px"
                   borderRadius="lg"
                 >
                   <EditablePreview w="100%" h="100%" />
-                  <EditableInput w="100%" h="100%" />
+                  <EditableInput w="100%" h="100%" name="debt_date" onChange={onChange}/>
                 </Editable>)
                 : (<Input placeholder="Data da dívida" onChange={onChange} name="debt_date" />)}
             </Box>
@@ -164,8 +186,13 @@ export default function ModalCard({ users }) {
           <ModalFooter>
             {/* Caso clique no card */}
             {!state.isNewDebt &&
-              <Button colorScheme="purple" bg="purple.600" mr={3} onClick={onClose}>
-                Fechar
+              <Button
+                colorScheme="purple"
+                bg="purple.600"
+                mr={3}
+                onClick={e => saveDebt(state.data && state.data.debt_id)}
+              >
+                Salvar
               </Button>
             }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Stack, Avatar, Badge } from '@chakra-ui/react';
+import { Box, Stack, Avatar } from '@chakra-ui/react';
 
 import store from '../../store';
 
@@ -30,14 +30,8 @@ export default function Card({ data, users }) {
           <Avatar name={user && user.name} bg="purple.600" color="white" />
 
           <Box pl={4}>
-            <Badge
-              position="absolute"
-              top="-20px"
-              right="0px"
-            >Default</Badge>
             <p className="name">{user && user.name}</p>
             <p className="debt">Dívida: {data && data.debt_value}</p>
-
           </Box>
 
         </Stack>

@@ -50,7 +50,21 @@ class Api {
     } catch (error) {
       throw error;
     }
-  }
+  };
+
+  static async updateDebt({debt_id, query}) {
+    try {
+      await fetch(`${process.env.REACT_APP_BACKEND_URL}/debts/${debt_id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(query)
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
 
 };
 
