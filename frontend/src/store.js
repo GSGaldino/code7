@@ -1,10 +1,6 @@
 import { createStore } from 'redux';
-import drawerReducer from './features/drawer/drawerReducer';
+import modalReducer from './reducers/modalReducer';
 
-const store = createStore(drawerReducer);
-
-store.dispatch({
-  type: "open"
-});
+const store = createStore(modalReducer);
 
 export default store;

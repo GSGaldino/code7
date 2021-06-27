@@ -4,6 +4,7 @@
   left: 0;
   background: seashell;
   width: 100%;
+  padding: 0px 10px;
 }
 
 .footer img {
@@ -15,4 +16,10 @@
 .footer p {
   margin: 0px 6px;
   font-size: 14px;
+}
+
+@media screen and (min-width: 320px){
+  .footer p {
+    font-size: 12px;
+  }
 }

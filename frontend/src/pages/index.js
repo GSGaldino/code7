@@ -2,20 +2,33 @@ import React from 'react';
 
 import Header from '../components/Header';
 import CardsWrapper from '../components/CardsWrapper';
+import ModalCard from '../components/ModalCard';
 import Footer from '../components/Footer';
 
-const data = [
-  {name: "fulano silva", debt: "R$ 500"},
-  {name: "ciclano teste", debt: "R$ 400"},
-  {name: "bautrano outro", debt: "R$ 300"},
-];
+import Api from '../services/api';
 
-export default function Home(){
+export default function Home() {
+  const [debts, setDebts] = React.useState([]);
+  const [users, setUsers] = React.useState([]);
+
+  React.useEffect(() => {
+
+    (async () => {
+      const debts = await Api.getDebts();
+      const users = await Api.getUsers();
+
+      setDebts(debts);
+      setUsers(users);
+    })();
+
+  }, []);
+
   return (
     <div id="home">
 
       <Header />
-      <CardsWrapper data={data}/>
+      <CardsWrapper data={debts} />
+      <ModalCard users={users}/>
       <Footer />
 
     </div>

@@ -5,10 +5,10 @@ module.exports = {
 
     Debt.find({}, (err, debts) => {
       // Initialize debts main Object
-      var debtMap = {};
+      var debtMap = [];
 
       // Populate debts to the main object
-      debts.forEach((debt, index) => debtMap[index] = debt);
+      debts.forEach((debt) => debtMap.push(debt));
 
       // Send to the client
       res.send(debtMap);
@@ -47,17 +47,13 @@ module.exports = {
     const query = req.body;
 
     if (!debt_id)
-      return res.status(400).json({
-        message: "Missing required param: debt_id"
-      })
+      return res.status(400).json({message: "Missing required param: debt_id"})
 
     if (!query)
-      return res.status(400).json({
-        message: "Missing something to update on request body."
-      })
+      return res.status(400).json({message: "Missing some field to update on request body."})
 
     try {
-      Debt.findOneAndUpdate(debt_id, query, { upsert: false }, function (err, doc) {
+      Debt.findOneAndUpdate({debt_id: debt_id}, query, { upsert: false }, function (err, doc) {
         if (err) return res.send(500, { error: err });
 
         return res.json({ message: "Success updated" })

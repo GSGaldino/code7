@@ -1,3 +1,5 @@
+import React from 'react';
+
 import Provider from '../Provider';
 
 import { Box, Button } from '@chakra-ui/react';
@@ -17,6 +19,7 @@ export default function Header() {
             <Button 
               colorScheme="purple"
               transition="all 0.3s ease"
+              onClick={e => store.dispatch({type:"open", data: {}, isNewDebt: true})}
               _hover={{
                 filter: "brightness(110%)"
               }}
@@ -31,6 +34,7 @@ export default function Header() {
           </Box>
         </Provider>
       </Box>
+
     </div>
-  )
+  );
 };

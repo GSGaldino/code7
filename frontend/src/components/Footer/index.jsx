@@ -1,7 +1,9 @@
 import React from 'react';
 
 import Provider from '../Provider';
+
 import { Box } from '@chakra-ui/react';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 import heart from '../../assets/heart.svg';
 
@@ -28,6 +30,7 @@ export default function Footer() {
               rel="noreferrer"
             >
               gsgaldino
+              <ExternalLinkIcon ml={1}/>
             </a>
           </Box>
 
