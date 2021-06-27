@@ -10,11 +10,17 @@ import store from '../../store';
 export default function Header() {
   return (
     <div id="header">
-      <Box w="100%" bg="purple.600" color="white" p={4}>
+      <Box w="100%" bg="purple.600" color="white" p={2}>
         <Provider>
-          <Box display="flex" justifyContent="space-between" fontSize="2xl" fontWeight="600">
+          <Box 
+            display="flex" 
+            justifyContent="space-between" 
+            fontSize="2xl" 
+            fontWeight="600" 
+            p="10px"
+          >
 
-            <h2>Bem-vindo!</h2>
+            <h2>Debt Manager</h2>
 
             <Button 
               colorScheme="purple"

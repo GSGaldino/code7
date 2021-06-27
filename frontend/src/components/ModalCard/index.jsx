@@ -14,15 +14,54 @@ import {
   EditableInput,
   Select,
   Box,
-  Input
+  Input,
+  useToast
 } from "@chakra-ui/react";
 
 import store from '../../store';
 
+import Api from '../../services/api';
+
 export default function ModalCard({ users }) {
   const [state, setState] = React.useState(store.getState());
+  const [formFields, setFormFields] = React.useState({});
+  const [isLoading, setIsLoading] = React.useState(false);
+  const toast = useToast();
 
   const onClose = () => store.dispatch({ type: "close", data: [] });
+
+  const onChange = event => {
+    const { name, value } = event.target;
+
+    return setFormFields({ ...formFields, [name]: value });
+  };
+
+  const addNewDebt = async event => {
+    // Get variables from state
+    const { user_id, debt_reason, debt_value, debt_date } = formFields;
+
+    // If don't fill all fields 
+    if (!user_id || !debt_reason || !debt_value || !debt_date)
+      return toast({
+        isClosable: true,
+        title: "Erro",
+        variant: "subtle",
+        status: "warning",
+        description: "Preencha todos os campos para continuar."
+      });
+
+    try {
+      // Loading ...
+      setIsLoading(true);
+
+      await Api.addDebt(formFields);
+      setIsLoading(false);
+      store.dispatch({ type: "close", data: [] });
+      return window.location.reload();
+    } catch (error) {
+      throw error;
+    }
+  };
 
   store.subscribe(() => setState(store.getState()));
 
@@ -48,6 +87,8 @@ export default function ModalCard({ users }) {
               <Select
                 placeholder="Selecione"
                 defaultValue={state.data && state.data.user_id}
+                onChange={onChange}
+                name="user_id"
                 variant="filled"
               >
                 {users && users.map(user => (
@@ -62,36 +103,54 @@ export default function ModalCard({ users }) {
             <Box {...boxStyles}>
               <p>Motivo: </p>
               {!state.isNewDebt
-                ? (<Editable defaultValue="Motivo" borderWidth="1px" p="4px 20px" borderRadius="lg" minH="20px">
+                ? (<Editable
+                  defaultValue={state.data && state.data.debt_reason}
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  p="4px 20px"
+                  minH="20px"
+                >
                   <EditablePreview w="100%" h="100%" />
                   <EditableInput w="100%" h="100%" />
                 </Editable>)
-                : (<Input placeholder="Motivo da dívida" />)}
+                : (<Input placeholder="Motivo da dívida" onChange={onChange} name="debt_reason" />)}
             </Box>
 
             <Box {...boxStyles}>
               <p>Valor: </p>
               {!state.isNewDebt
-                ? (<Editable defaultValue="Valor" borderWidth="1px" p="4px 20px" borderRadius="lg" minH={2}>
+                ? (<Editable
+                  defaultValue={state.data && state.data.debt_value}
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  p="4px 20px"
+                  minH={2}
+                >
                   <EditablePreview w="100%" h="100%" />
                   <EditableInput w="100%" h="100%" />
                 </Editable>)
-                : (<Input placeholder="Valor da dívida" />)}
+                : (<Input placeholder="Valor da dívida" onChange={onChange} name="debt_value" />)}
             </Box>
 
             <Box {...boxStyles}>
               <p>Data: <span style={{ color: "rgba(0,0,0,.5)" }}>DD/MM/AAAA</span></p>
               {!state.isNewDebt
-                ? (<Editable defaultValue="01/01/2021" borderWidth="1px" p="4px 20px" borderRadius="lg">
+                ? (<Editable
+                  defaultValue={state.data && state.data.debt_date}
+                  borderWidth="1px"
+                  p="4px 20px"
+                  borderRadius="lg"
+                >
                   <EditablePreview w="100%" h="100%" />
                   <EditableInput w="100%" h="100%" />
                 </Editable>)
-                : (<Input placeholder="Data da dívida" />)}
+                : (<Input placeholder="Data da dívida" onChange={onChange} name="debt_date" />)}
             </Box>
 
           </ModalBody>
 
           <ModalFooter>
+            {/* Caso clique no card */}
             {!state.isNewDebt &&
               <Button colorScheme="purple" bg="purple.600" mr={3} onClick={onClose}>
                 Fechar
@@ -104,8 +163,14 @@ export default function ModalCard({ users }) {
               </Button>
             }
 
-            {state.isNewDebt && 
-              <Button colorScheme="purple" bg="purple.600">
+            {/* Caso clique no botão adicionar */}
+            {state.isNewDebt &&
+              <Button
+                colorScheme="purple"
+                bg="purple.600"
+                onClick={addNewDebt}
+                isLoading={isLoading}
+              >
                 Enviar
               </Button>
             }

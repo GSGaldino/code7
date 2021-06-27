@@ -3,7 +3,7 @@ import React from 'react';
 import Provider from '../Provider';
 import Card from '../Card';
 
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Wrap, WrapItem } from '@chakra-ui/react';
 
 export default function CardsWrapper({ data }) {
 
@@ -12,12 +12,12 @@ export default function CardsWrapper({ data }) {
       <Provider>
 
         <Box p="20px 10px" >
-          <Flex justify="space-between" wrap="wrap">
+          <Wrap justify="space-around" >
 
             {data && data
-              .map(item => <Card key={Math.random()} data={item} />)}
+              .map(item => <WrapItem><Card key={Math.random()} data={item} /></WrapItem>)}
 
-          </Flex>
+          </Wrap>
         </Box>
 
 

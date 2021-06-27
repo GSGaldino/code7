@@ -1,4 +1,5 @@
 const Debt = require('./models/Debt');
+const crypto = require('crypto');
 
 module.exports = {
   async index(req, res) {
@@ -18,15 +19,19 @@ module.exports = {
 
   async create(req, res, next) {
     // Get body params
-    const { debt_id, user_id, debt_reason, debt_date, debt_value } = req.body;
+    const { user_id, debt_reason, debt_date, debt_value } = req.body;
+    const debt_id = crypto.randomBytes(4).toString("hex");
 
     // Verify if all variables have been send
-    if (!debt_id || !user_id || !debt_reason || !debt_date || !debt_value)
+    if ( !user_id || !debt_reason || !debt_date || !debt_value)
       return res.status(400).json({ message: "Missing required param. Required params are: debt_id, user_id, debt_reason, debt_date, debt_value" })
 
     try {
       // Define debt object based on mongodb model
-      const debt = new Debt(req.body);
+      const debt = new Debt({
+        ...req.body,
+        debt_id: debt_id
+      });
 
       // Save to cloud and return success response
       debt
