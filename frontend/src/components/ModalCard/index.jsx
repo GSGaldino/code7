@@ -13,7 +13,8 @@ import {
   EditablePreview,
   EditableInput,
   Select,
-  Box
+  Box,
+  Input
 } from "@chakra-ui/react";
 
 import store from '../../store';
@@ -28,8 +29,8 @@ export default function ModalCard({ users }) {
   const boxStyles = {
     borderWidth: "1px",
     borderRadius: "lg",
-    p: 4,
-    mb: 2
+    mb: 2,
+    p: 4
   };
 
   return (
@@ -60,41 +61,56 @@ export default function ModalCard({ users }) {
 
             <Box {...boxStyles}>
               <p>Motivo: </p>
-              {!state.isNewDebt && (
-                <Editable defaultValue="Motivo">
-                  <EditablePreview />
-                  <EditableInput />
-                </Editable>
-              )}
-
+              {!state.isNewDebt
+                ? (<Editable defaultValue="Motivo" borderWidth="1px" p="4px 20px" borderRadius="lg" minH="20px">
+                  <EditablePreview w="100%" h="100%" />
+                  <EditableInput w="100%" h="100%" />
+                </Editable>)
+                : (<Input placeholder="Motivo da dívida" />)}
             </Box>
 
             <Box {...boxStyles}>
               <p>Valor: </p>
-              <Editable defaultValue={state.data && state.data.debt_value}>
-                <EditablePreview />
-                <EditableInput />
-              </Editable>
-
+              {!state.isNewDebt
+                ? (<Editable defaultValue="Valor" borderWidth="1px" p="4px 20px" borderRadius="lg" minH={2}>
+                  <EditablePreview w="100%" h="100%" />
+                  <EditableInput w="100%" h="100%" />
+                </Editable>)
+                : (<Input placeholder="Valor da dívida" />)}
             </Box>
 
             <Box {...boxStyles}>
               <p>Data: <span style={{ color: "rgba(0,0,0,.5)" }}>DD/MM/AAAA</span></p>
-              <Editable defaultValue="Data">
-                <EditablePreview />
-                <EditableInput />
-              </Editable>
-
+              {!state.isNewDebt
+                ? (<Editable defaultValue="01/01/2021" borderWidth="1px" p="4px 20px" borderRadius="lg">
+                  <EditablePreview w="100%" h="100%" />
+                  <EditableInput w="100%" h="100%" />
+                </Editable>)
+                : (<Input placeholder="Data da dívida" />)}
             </Box>
 
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="purple" bg="purple.600" mr={3} onClick={onClose}>
-              Fechar
-            </Button>
-            <Button variant="ghost">Secondary Action</Button>
+            {!state.isNewDebt &&
+              <Button colorScheme="purple" bg="purple.600" mr={3} onClick={onClose}>
+                Fechar
+              </Button>
+            }
+
+            {!state.isNewDebt &&
+              <Button variant="ghost">
+                Excluir
+              </Button>
+            }
+
+            {state.isNewDebt && 
+              <Button colorScheme="purple" bg="purple.600">
+                Enviar
+              </Button>
+            }
           </ModalFooter>
+
         </ModalContent>
       </Modal>
     </>
