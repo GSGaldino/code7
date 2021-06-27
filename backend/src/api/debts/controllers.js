@@ -80,11 +80,11 @@ module.exports = {
       });
 
     // Delete debt and returns itself to the variable
-    const deleted = await Debt.findOneAndDelete({ debt_id: debt_id });
+    const deleted = await Debt.findOneAndDelete({ debt_id: String(debt_id) });
 
     // Return success response to the client
     res.json({
-      message: `Success deleted debt id: ${deleted.debt_id}`
+      message: `Success deleted debt id: ${deleted.debt_id && deleted.debt_id}`
     });
   }
 

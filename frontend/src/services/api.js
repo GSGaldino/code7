@@ -1,6 +1,6 @@
 class Api {
 
-  constructor() {throw new Error("This class cannot be instantiated.")};
+  constructor() { throw new Error("This class cannot be instantiated.") };
 
   static async getDebts() {
     try {
@@ -39,7 +39,19 @@ class Api {
       throw error;
     }
   };
-  
+
+  static async deleteDebt(debt_id) {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/debts/${debt_id}`, {
+        method: "DELETE",
+      });
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
 };
 
 export default Api;

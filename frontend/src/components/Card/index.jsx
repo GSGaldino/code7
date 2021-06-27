@@ -1,11 +1,13 @@
 import React from 'react';
 
 import { Box, Stack, Avatar, Badge } from '@chakra-ui/react';
+
 import store from '../../store';
 
 import './styles.css';
 
-export default function Card({ data }) {  
+export default function Card({ data, users }) {
+  const user = users.filter(user => data.user_id === user.id)[0];
 
   return (
     <div id="card">
@@ -25,7 +27,7 @@ export default function Card({ data }) {
 
         <Stack direction="row" alignItems="center" position="relative">
 
-          <Avatar name={data && data.name} bg="purple.600" color="white" />
+          <Avatar name={user && user.name} bg="purple.600" color="white" />
 
           <Box pl={4}>
             <Badge
@@ -33,8 +35,9 @@ export default function Card({ data }) {
               top="-20px"
               right="0px"
             >Default</Badge>
-            <p className="name">Debt ID: {data && data.debt_id}</p>
+            <p className="name">{user && user.name}</p>
             <p className="debt">Dívida: {data && data.debt_value}</p>
+
           </Box>
 
         </Stack>

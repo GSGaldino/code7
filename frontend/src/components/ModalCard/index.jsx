@@ -4,7 +4,6 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
   ModalFooter,
   ModalBody,
   ModalCloseButton,
@@ -63,6 +62,20 @@ export default function ModalCard({ users }) {
     }
   };
 
+  const deleteDebt = async debt_id => {
+    try {
+      // Loading ...
+      setIsLoading(true);
+
+      await Api.deleteDebt(debt_id);
+      setIsLoading(false);
+      store.dispatch({ type: "close", data: [] });
+      return window.location.reload();
+    } catch (error) {
+      throw error;
+    }
+  };
+
   store.subscribe(() => setState(store.getState()));
 
   const boxStyles = {
@@ -77,7 +90,6 @@ export default function ModalCard({ users }) {
       <Modal isOpen={state.isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader></ModalHeader>
           <ModalCloseButton />
 
           <ModalBody>
@@ -158,7 +170,11 @@ export default function ModalCard({ users }) {
             }
 
             {!state.isNewDebt &&
-              <Button variant="ghost">
+              <Button
+                variant="ghost"
+                onClick={e => deleteDebt(state.data && state.data.debt_id)}
+                isLoading={isLoading}
+              >
                 Excluir
               </Button>
             }

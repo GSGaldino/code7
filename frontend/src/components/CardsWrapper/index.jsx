@@ -5,7 +5,7 @@ import Card from '../Card';
 
 import { Box, Wrap, WrapItem } from '@chakra-ui/react';
 
-export default function CardsWrapper({ data }) {
+export default function CardsWrapper({ debts, users }) {
 
   return (
     <div id="cards-wrapper">
@@ -14,8 +14,8 @@ export default function CardsWrapper({ data }) {
         <Box p="20px 10px" >
           <Wrap justify="space-around" >
 
-            {data && data
-              .map(item => <WrapItem><Card key={Math.random()} data={item} /></WrapItem>)}
+            {debts && debts
+              .map(debt => <WrapItem><Card key={Math.random()} users={users} data={debt} /></WrapItem>)}
 
           </Wrap>
         </Box>

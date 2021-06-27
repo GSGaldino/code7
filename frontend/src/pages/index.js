@@ -27,7 +27,7 @@ export default function Home() {
     <div id="home">
 
       <Header />
-      <CardsWrapper data={debts} />
+      <CardsWrapper debts={debts} users={users}/>
       <ModalCard users={users}/>
       <Footer />
 
